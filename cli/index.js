@@ -1,6 +1,7 @@
 const inquirer = require('inquirer');
 const request = require('superagent');
 const Game = require('./game');
+const colors = require('colors');
 const server = 'http://localhost:3000';
 
 console.log('Hi, welcome to Bird\'s eye view!');
