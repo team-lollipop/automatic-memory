@@ -5,12 +5,7 @@ const server = 'http://localhost:3000';
 
 console.log('Hi, welcome to Bird\'s eye view!');
 
-const edgar = {
-    name: 'Edgar',
-    password: 'woeisme'
-};
 let token = '';
-
 
 const service = {
     signup(userData) {
@@ -21,6 +16,9 @@ const service = {
                 return body;
             });
     }
+    // getTask(userId) {
+    //     return request.get(`${server}/api/task`)
+    // }
 };
 
 const game = new Game(service);
