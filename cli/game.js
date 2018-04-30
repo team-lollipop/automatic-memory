@@ -13,7 +13,7 @@ const signupQuestions = [
         name: 'password',
         message: 'Please enter your password'
     }
-]
+];
 
 class Game {
     constructor(api) {

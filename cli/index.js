@@ -1,10 +1,14 @@
 const inquirer = require('inquirer');
 const request = require('superagent');
 const Game = require('./game');
-const colors = require('colors');
 const server = 'http://localhost:3000';
+const emoji = require('node-emoji');
 
-console.log('Hi, welcome to Bird\'s eye view!');
+const bird = emoji.get('bird');
+const babyBird = emoji.get('baby_chick');
+
+console.log('Hi, welcome to Bird\'s eye view!', babyBird);
+
 
 let token = '';
 
