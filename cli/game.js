@@ -1,8 +1,15 @@
 const inquirer = require('inquirer');
 const colors = require('colors');
 
+const lineBreak = () => console.log('\n');
 
 const signupQuestions = [
+    {
+        type: 'list',
+        name: 'auth',
+        message: 'Are you a new or returning user?',
+        choices: [{ name:'This is my first time, sign me up!', value: 'signUp' }, { name: 'I\'ve been here before, sign me in!', value: 'signIn' }]
+    },
     {
         type: 'input',
         name: 'name',
@@ -21,13 +28,19 @@ class Game {
     }
     start() {
         inquirer.prompt(signupQuestions)
-            .then(({ name, password }) => this.api.signup({ name, password }))
-            .then(({ token, name, userId }) => {
+            .then(({ auth, name, password }) => this.api[auth]({ name, password }))
+            .then(({ token, name, userId, message }) => {
                 this.api.token = token;
-                console.log('hello'.green, name.yellow);
+                lineBreak();
+                console.log(message);
                 // this.createTask(userId);
             })
-            .catch(err => console.error(err));
+            .catch((err) => {
+                lineBreak();
+                console.log(JSON.parse(err.response.text).error.yellow, 'Please try again!');
+                lineBreak();
+                this.start();                
+            });
     }
     // createTask(userId) {
     //     this.api.getTask(userId, this.api.token)
