@@ -23,7 +23,7 @@ class Game {
             .then(({ token, name, userId }) => {
                 this.api.token = token;
                 console.log('hello', name);
-                this.createTask(userId);
+                // this.createTask(userId);
             })
             .catch(err => console.error(err));
     }

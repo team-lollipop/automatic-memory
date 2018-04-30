@@ -16,8 +16,9 @@ const service = {
                 return body;
             });
     }
-    // getTask(userId) {
+    // getTask(userId, token) {
     //     return request.get(`${server}/api/task`)
+    //      .set('Authorization', token)
     // }
 };
 
