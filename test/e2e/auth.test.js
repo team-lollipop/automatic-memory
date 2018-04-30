@@ -23,5 +23,23 @@ describe('Auth Api Test', () => {
         assert.ok(token);
     });
 
+    it.skip('verify route is functional', () => {
+        return request.get('/api/auth/verify')
+            .set('Authorization', token)
+            .then(({ body }) => {
+                assert.ok(body.verified);
+            });
+    });
+
+    it('signin route functional', () => {
+        return request.post('/api/auth/signin')
+            .send({
+                name: 'Master Blaster',
+                password: 'bartertown'
+            })
+            .then(({ body }) => {
+                assert.ok(body.token);
+            });
+    });
 
 });
