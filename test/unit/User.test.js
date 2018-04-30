@@ -36,4 +36,10 @@ describe('User model', () => {
         assert.notEqual(user.hash, user.password);
     });
 
+    it('compares password to hash', () => {
+        const user = new User(input);
+        user.generateHash(password);
+        assert.ok(user.comparePassword(password));
+    });
+
 });
