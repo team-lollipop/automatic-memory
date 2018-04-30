@@ -23,7 +23,7 @@ describe('Auth Api Test', () => {
         assert.ok(token);
     });
 
-    it.skip('verify route is functional', () => {
+    it('verify route functional', () => {
         return request.get('/api/auth/verify')
             .set('Authorization', token)
             .then(({ body }) => {
