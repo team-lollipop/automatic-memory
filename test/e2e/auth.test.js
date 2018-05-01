@@ -1,6 +1,7 @@
 const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
+const User = require('../../lib/models/User');
 
 describe('Auth API', () => {
 
@@ -56,7 +57,7 @@ describe('Auth API', () => {
             .send(user)
             .then(({ body }) => {
                 token = body.token;
-                user.options = body.options;
+                user.id = body.userId;
             });
     });
 
@@ -84,12 +85,14 @@ describe('Auth API', () => {
     });
     
     it('assigns user a task and generates a set of game options for user', () => {
-        // TODO add user routes (i.e. GET one) and use instead of returning options
-        assert.ok(user.currentTask);
-        assert.ok(user.options.n.description);
-        assert.ok(user.options.s.description);
-        assert.ok(user.options.e.description);
-        assert.ok(user.options.w.description);
+        return User.findById(user.id)
+            .then(user => {
+                assert.ok(user.currentTask);
+                assert.ok(user.options.n.action);
+                assert.ok(user.options.s.action);
+                assert.ok(user.options.e.action);
+                assert.ok(user.options.w.action);
+            });
     });
 
 });
