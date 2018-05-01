@@ -29,11 +29,11 @@ class Game {
     start() {
         inquirer.prompt(signupQuestions)
             .then(({ auth, name, password }) => this.api[auth]({ name, password }))
-            .then(({ token, name, userId, message }) => {
+            .then(({ token, name, userId }) => {
                 this.api.token = token;
                 lineBreak();
-                console.log(message);
-                // this.createTask(userId);
+                console.log(`Welcome ${name.green}!`);
+                this.getTask(userId);
             })
             .catch((err) => {
                 lineBreak();
@@ -42,14 +42,14 @@ class Game {
                 this.start();
             });
     }
-    // createTask(userId) {
-    //     this.api.getTask(userId, this.api.token)
-    //         .then(task => {
-    //             // do stuff
+    getTask(userId) {
+        this.api.getTask(userId, this.api.token)
+            .then(task => {
+                // do stuff
 
-    //         });
+            });
 
-    // }
+    }
 }
 
 

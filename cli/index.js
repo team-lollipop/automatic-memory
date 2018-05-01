@@ -17,7 +17,6 @@ const service = {
             .send(userData)
             .then(({ body }) => {
                 token = body.token;
-                body.message = `Welcome ${body.name.green}!`;
                 return body;
             });
     },
@@ -26,7 +25,6 @@ const service = {
             .send(userData)
             .then(({ body }) => {
                 token = body.token;
-                body.message = `Welcome back, ${body.name.green}!`;
                 return body;
             });
 
