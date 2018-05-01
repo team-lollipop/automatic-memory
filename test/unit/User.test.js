@@ -12,10 +12,10 @@ describe('User model', () => {
             inventory: [],
             currentTask: Types.ObjectId(),
             options: {
-                n: { description: 'this is a description' },
-                s: { description: 'this is a description' },
-                e: { description: 'this is a description' },
-                w: { description: 'this is a description' }
+                n: { action: 'interact' },
+                s: { action: 'look' },
+                e: { action: 'resolve' },
+                w: { action: 'look' }
             }
         };
         const user = new User(fullInput);
@@ -30,10 +30,10 @@ describe('User model', () => {
         assert.strictEqual(errors.name.kind, 'required');
         assert.strictEqual(errors.hash.kind, 'required');
         assert.strictEqual(errors.currentTask.kind, 'required');
-        assert.strictEqual(errors['options.n.description'].kind, 'required');
-        assert.strictEqual(errors['options.s.description'].kind, 'required');
-        assert.strictEqual(errors['options.e.description'].kind, 'required');
-        assert.strictEqual(errors['options.w.description'].kind, 'required');
+        assert.strictEqual(errors['options.n.action'].kind, 'required');
+        assert.strictEqual(errors['options.s.action'].kind, 'required');
+        assert.strictEqual(errors['options.e.action'].kind, 'required');
+        assert.strictEqual(errors['options.w.action'].kind, 'required');
     });
 
     const input = {
