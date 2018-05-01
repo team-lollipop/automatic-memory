@@ -8,8 +8,6 @@ describe('User API', () => {
     before(() => dropCollection('fluffs'));
     beforeEach(() => dropCollection('users'));
 
-    // let token = null;
-
     const fluffs = [
         { description : 'You arrive at a freeway.' },
         { description : 'There is a wide river here.' },
@@ -55,8 +53,22 @@ describe('User API', () => {
         return request.post('/api/auth/signup')
             .send(user)
             .then(({ body }) => {
-                // token = body.token;
                 user.id = body.userId;
+            });
+    });
+
+    it('Adds item to inventory', () => {
+        return request.post(`/api/users/${user.id}/inventory`)
+            .send(task.item)
+            .then(({ body }) => {
+                assert.deepEqual([task.item.type], body.inventory);
+            });
+    });
+
+    it('gets inventory', () => {
+        return request.get(`/api/users/${user.id}/inventory`)
+            .then(({ body }) => {
+                assert.deepEqual([task.item.type], body.inventory);
             });
     });
 
@@ -68,5 +80,4 @@ describe('User API', () => {
                 assert.ok(body.info);
             });
     });
-
 });

@@ -43,7 +43,7 @@ const service = {
             });
     },
     addItem(userId, item) {
-        return request.put(`${server}/api/users/${userId}/inventory`)
+        return request.post(`${server}/api/users/${userId}/inventory`)
             .send(item)
             .then(({ body }) => {
                 return body;
