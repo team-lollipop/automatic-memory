@@ -5,9 +5,24 @@ const { dropCollection } = require('./db');
 describe('Auth API', () => {
 
     before(() => dropCollection('tasks'));
+    before(() => dropCollection('fluffs'));
     beforeEach(() => dropCollection('users'));
 
     let token = null;
+
+    const fluffs = [
+        { description : 'You arrive at a freeway.' },
+        { description : 'There is a wide river here.' },
+        { description : 'You find a tall dead tree.' }
+    ];
+
+    before(() => {
+        fluffs.forEach(obj => {
+            request.post('/api/fluffs')
+                .send(obj)
+                .then();
+        });
+    });
 
     let task = {
         number: 1,
