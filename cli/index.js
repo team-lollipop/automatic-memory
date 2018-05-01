@@ -17,7 +17,6 @@ const service = {
             .send(userData)
             .then(({ body }) => {
                 token = body.token;
-                body.message = `Welcome ${body.name.green}!`;
                 return body;
             });
     },
@@ -26,14 +25,36 @@ const service = {
             .send(userData)
             .then(({ body }) => {
                 token = body.token;
-                body.message = `Welcome back, ${body.name.green}!`;
                 return body;
             });
 
-    }
+    },
     getTask(userId, token) {
-        return request.get(`${server}/api/tasks`)
-         .set('Authorization', token)
+        return request.get(`${server}/api/users/${userId}/intro`)
+            // .set('Authorization', token)
+            .then(({ body }) => {
+                return body;
+            });
+    },
+    getOptions(userId, direction) {
+        return request.get(`${server}/api/users/${userId}?direction=${direction}`)
+            .then(({ body }) => {
+                return body;
+            });
+    },
+    addItem(userId, item) {
+        return request.put(`${server}/api/users/${userId}/inventory`)
+            .send(item)
+            .then(({ body }) => {
+                return body;
+            });
+    },
+    checkInventory(userId) {
+        return request.get(`${server}/api/users/${userId}/inventory`)
+            .then(({ body }) => {
+                return body;
+            });
+
     }
 };
 
