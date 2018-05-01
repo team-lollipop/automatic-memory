@@ -4,6 +4,7 @@ const Task = require('../../lib/models/Task');
 describe('Task model', () => {
     it('is a good, valid model', () => {
         const info = {
+            number: 1,
             explanation: 'You begin to feel hungry. Better find some food.',
             item: { 
                 type: 'walnut',
