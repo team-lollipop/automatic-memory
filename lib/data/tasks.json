@@ -1,5 +1,6 @@
 [
-    {
+    {   
+        "number": 1,
         "startingDesc": "Another day dawns for you (User Name), although in the Crowish language you are known by your kin as Caaaaw-Aaack-aaaHH, or Caaw for short. Once again you begin your routine with a quick bath in whatever puddle you can find, and then it’s off to gather a hearty breakfast. The downtown city landscape is coming alive with busy humans who are certain to leave behind tasty treats for you to discover. All you have to do is decide where to look, which way do you want to go?",
         "requiredItem": {
             "type": "Walnut",
@@ -12,6 +13,7 @@
         }
     },
     {
+        "number": 2,
         "startingDesc": "Momentarily forgetting the instance of your stomach you confer with some of your clan about what this shiny token could mean, and why it was hidden inside your breakfast. Cawww-AhAck says that it is bad news, Ack-Ack-aaaacK seconds the assessment. He says that it is from the Squirrel Kings personal treasury, if they find out you have it they will make as much trouble for you as they can. You’d better return it. Your meal postponed yet again you fly off in search of the Greater Oak, kingdom of squirrels.",
         "requiredItem": {
             "type": "Macaroni Necklace",

@@ -31,10 +31,10 @@ const service = {
             });
 
     }
-    // getTask(userId, token) {
-    //     return request.get(`${server}/api/task`)
-    //      .set('Authorization', token)
-    // }
+    getTask(userId, token) {
+        return request.get(`${server}/api/tasks`)
+         .set('Authorization', token)
+    }
 };
 
 const game = new Game(service);
