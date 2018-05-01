@@ -3,13 +3,14 @@ const request = require('./request');
 const { dropCollection } = require('./db');
 const User = require('../../lib/models/User');
 
-describe('User routes', () => {
-
+describe.only('User routes', () => {
+    
     before(() => dropCollection('tasks'));
     before(() => dropCollection('fluffs'));
     before(() => dropCollection('users'));
-
+    
     let token = '';
+    
     const fluffs = [
         { description : 'You arrive at a freeway.' },
         { description : 'There is a wide river here.' },
@@ -23,7 +24,6 @@ describe('User routes', () => {
                 .then();
         });
     });
-
     let task = {
         number: 1,
         explanation: 'You begin to feel hungry. Better find some food.',
@@ -37,7 +37,7 @@ describe('User routes', () => {
             resolved: 'You drop the walnut onto the street. A car rolls over it, cracking the shell, and you carefully swoop down and devour the food inside.'
         }
     };
-    
+
     before(() => {
         return request.post('/api/tasks')
             .send(task)
@@ -50,7 +50,7 @@ describe('User routes', () => {
         name: 'Joe',
         password: 'hello'
     };
-
+        
     before(() => {
         return request.post('/api/auth/signup')
             .send(user)
@@ -59,4 +59,14 @@ describe('User routes', () => {
                 user.id = body.userId;
             });
     });
-})
+
+    it('Adds item to inventory', () => {
+        return request.post(`/api/users/${user.id}/inventory`)
+            .send(task.item)
+            .then(({ body }) => {
+                assert.deepEqual([task.item.type], body.inventory);
+            });
+    });
+
+
+});
