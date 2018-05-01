@@ -49,7 +49,6 @@ describe('Auth API', () => {
     let user = {
         name: 'Master Blaster',
         password: 'bartertown',
-        currentTask: task._id
     };
 
     beforeEach(() => {
@@ -84,7 +83,9 @@ describe('Auth API', () => {
             });
     });
     
-    it('generates a set of game options for user', () => {
+    it('assigns user a task and generates a set of game options for user', () => {
+        // TODO add user routes (i.e. GET one) and use instead of returning options
+        assert.ok(user.currentTask);
         assert.ok(user.options.n.description);
         assert.ok(user.options.s.description);
         assert.ok(user.options.e.description);
