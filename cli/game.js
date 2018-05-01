@@ -55,7 +55,7 @@ class Game {
                         { name: 'West', value: 'w' }]
                 })
                     .then(({ direction }) => {
-                        this.api.getOptions(userId, direction)
+                        this.api.getOption(userId, direction)
                             .then((body) => {
                                 const resolved = body.resolved;
                                 const unresolved = body.unresolved;

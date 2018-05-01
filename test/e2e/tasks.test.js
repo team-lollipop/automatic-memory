@@ -1,8 +1,12 @@
 const { assert } = require('chai');
 const request = require('./request');
+const { dropCollection } = require('./db');
 // TODO: decide on auth for route
 
 describe('Task API', () => {
+
+    before(() => dropCollection('tasks'));
+
     let info = {
         number: 1,
         explanation: 'You begin to feel hungry. Better find some food.',

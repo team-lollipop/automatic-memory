@@ -1,8 +1,12 @@
 const { assert } = require('chai');
 const request = require('./request');
+const { dropCollection } = require('./db');
 // TODO: decide on auth for route
 
 describe('Fluff API', () => {
+    
+    before(() => dropCollection('fluffs'));
+
     const info = {
         description : 'You arrive at a freeway.'
     };
