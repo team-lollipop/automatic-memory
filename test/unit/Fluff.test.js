@@ -1,6 +1,6 @@
 const { assert } = require('chai');
 const Fluff = require('../../lib/models/Fluff');
-// const { getErrors } = require('./helpers');
+const { getErrors } = require('./helpers');
 
 describe('Fluff model', () => {
 
@@ -15,6 +15,10 @@ describe('Fluff model', () => {
         assert.isUndefined(fluff.validateSync());
     });
 
-    // TODO: test required
+    it('has required fields', () => {
+        const invalidFluff = new Fluff({});
+        const errors = getErrors(invalidFluff.validateSync(), 1);
+        assert.strictEqual(errors.description.kind, 'required');
+    });
 
 });

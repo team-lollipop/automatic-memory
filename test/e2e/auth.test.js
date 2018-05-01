@@ -1,14 +1,29 @@
 const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
+const User = require('../../lib/models/User');
 
 describe('Auth API', () => {
 
-    beforeEach(() => dropCollection('users'));
     before(() => dropCollection('tasks'));
+    before(() => dropCollection('fluffs'));
+    beforeEach(() => dropCollection('users'));
 
     let token = null;
-    let user = null;
+
+    const fluffs = [
+        { description : 'You arrive at a freeway.' },
+        { description : 'There is a wide river here.' },
+        { description : 'You find a tall dead tree.' }
+    ];
+
+    before(() => {
+        fluffs.forEach(obj => {
+            request.post('/api/fluffs')
+                .send(obj)
+                .then();
+        });
+    });
 
     let task = {
         number: 1,
@@ -32,16 +47,17 @@ describe('Auth API', () => {
             });
     });
 
+    let user = {
+        name: 'Master Blaster',
+        password: 'bartertown',
+    };
+
     beforeEach(() => {
         return request.post('/api/auth/signup')
-            .send({
-                name: 'Master Blaster',
-                password: 'bartertown',
-                currentTask: task._id
-            })
+            .send(user)
             .then(({ body }) => {
                 token = body.token;
-                user = body.user;
+                user.id = body.userId;
             });
     });
 
@@ -68,11 +84,15 @@ describe('Auth API', () => {
             });
     });
     
-    it('generates a set of game options for user', () => {
-        assert.ok(user.options.n.description);
-        assert.ok(user.options.s.description);
-        assert.ok(user.options.e.description);
-        assert.ok(user.options.w.description);
+    it('assigns user a task and generates a set of game options for user', () => {
+        return User.findById(user.id)
+            .then(user => {
+                assert.ok(user.currentTask);
+                assert.ok(user.options.n.action);
+                assert.ok(user.options.s.action);
+                assert.ok(user.options.e.action);
+                assert.ok(user.options.w.action);
+            });
     });
 
 });

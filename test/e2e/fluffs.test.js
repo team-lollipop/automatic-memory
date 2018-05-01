@@ -1,15 +1,24 @@
 const { assert } = require('chai');
 const request = require('./request');
 // TODO: decide on auth for route
-// TODO: add post?
 
 describe('Fluff API', () => {
-    it('gets 2 random fluffs', () => {
-        return request.get('/api/fluffs')
+    const info = {
+        description : 'You arrive at a freeway.'
+    };
+
+    it('saves a bit of fluff', () => {
+        return request.post('/api/fluffs')
+            .send(info)
             .then(({ body }) => {
-                assert.strictEqual(body.length, 2);
-                assert.ok(body[0].description);
-                assert.ok(body[1].description);
+                const { _id, __v } = body;
+                assert.ok(_id);
+                assert.strictEqual(__v, 0);
+                assert.deepEqual(body, {
+                    ...info,
+                    _id,
+                    __v
+                });
             });
     });
 });
