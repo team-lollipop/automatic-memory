@@ -6,7 +6,7 @@ describe('User API', () => {
 
     before(() => dropCollection('tasks'));
     before(() => dropCollection('fluffs'));
-    beforeEach(() => dropCollection('users'));
+    before(() => dropCollection('users'));
 
     const fluffs = [
         { description : 'You arrive at a freeway.' },
@@ -24,13 +24,13 @@ describe('User API', () => {
 
     let task = {
         number: 1,
-        explanation: 'You begin to feel hungry. Better find some food.',
-        item: { 
+        startingDesc: 'You begin to feel hungry. Better find some food.',
+        requiredItem: { 
             type: 'walnut',
-            description: 'You discover a walnut, but cannot crack the shell with your beak. You pick it up.'
+            itemDesc: 'You discover a walnut, but cannot crack the shell with your beak. You pick it up.'
         },
         endpoint: {
-            description: 'You arrive at an intersection, crossed by telephone wires.',
+            desc: 'You arrive at an intersection, crossed by telephone wires.',
             unresolved: 'If you needed to crack something, this would be a good spot for it.',
             resolved: 'You drop the walnut onto the street. A car rolls over it, cracking the shell, and you carefully swoop down and devour the food inside.'
         }
@@ -49,7 +49,7 @@ describe('User API', () => {
         password: 'bartertown',
     };
 
-    beforeEach(() => {
+    before(() => {
         return request.post('/api/auth/signup')
             .send(user)
             .then(({ body }) => {
@@ -59,16 +59,16 @@ describe('User API', () => {
 
     it('Adds item to inventory', () => {
         return request.post(`/api/users/${user.id}/inventory`)
-            .send(task.item)
+            .send(task.requiredItem)
             .then(({ body }) => {
-                assert.deepEqual([task.item.type], body.inventory);
+                assert.deepEqual([task.requiredItem.type], body.inventory);
             });
     });
 
     it('gets inventory', () => {
         return request.get(`/api/users/${user.id}/inventory`)
             .then(({ body }) => {
-                assert.deepEqual([task.item.type], body.inventory);
+                assert.deepEqual([task.requiredItem.type], body.inventory);
             });
     });
 
