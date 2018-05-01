@@ -29,9 +29,9 @@ const service = {
             });
 
     },
-    getTask(userId, token) {
+    getTask(userId) {
         return request.get(`${server}/api/users/${userId}/intro`)
-            // .set('Authorization', token)
+            .set('Authorization', token)
             .then(({ body }) => {
                 return body;
             });
