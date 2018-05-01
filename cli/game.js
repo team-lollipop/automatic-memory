@@ -63,7 +63,7 @@ class Game {
                                 if(body.action === 'interact') {
                                     this.api.addItem(userId, body.item.type)
                                         .then((body) => {
-                                            console.log(`${body.item.type} has been added to your inventory!`);
+                                            console.log(`${body.inventory[0]} has been added to your inventory!`);
                                         });
                                 } else if(body.action === 'resolve') {
                                     this.api.checkInventory(userId)

@@ -68,5 +68,12 @@ describe.only('User routes', () => {
             });
     });
 
+    it('gets inventory', () => {
+        return request.get(`/api/users/${user.id}/inventory`)
+            .then(({ body }) => {
+                assert.deepEqual([task.item.type], body.inventory);
+            });
+    });
+
 
 });
