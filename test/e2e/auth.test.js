@@ -4,11 +4,10 @@ const { dropCollection } = require('./db');
 
 describe('Auth API', () => {
 
-    beforeEach(() => dropCollection('users'));
     before(() => dropCollection('tasks'));
+    beforeEach(() => dropCollection('users'));
 
     let token = null;
-    let user = null;
 
     let task = {
         number: 1,
@@ -32,16 +31,18 @@ describe('Auth API', () => {
             });
     });
 
+    let user = {
+        name: 'Master Blaster',
+        password: 'bartertown',
+        currentTask: task._id
+    };
+
     beforeEach(() => {
         return request.post('/api/auth/signup')
-            .send({
-                name: 'Master Blaster',
-                password: 'bartertown',
-                currentTask: task._id
-            })
+            .send(user)
             .then(({ body }) => {
                 token = body.token;
-                user = body.user;
+                user.options = body.options;
             });
     });
 
