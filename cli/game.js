@@ -42,13 +42,43 @@ class Game {
                 this.start();
             });
     }
-    getTask(userId) {
+    presentTask(userId) {
         this.api.getTask(userId, this.api.token)
             .then(task => {
-                // do stuff
+                console.log(task);
+                return inquirer.prompt({
+                    type: 'list',
+                    name: 'direction',
+                    choices: [{ name:'North', value: 'n' },
+                        { name: 'South', value: 's' },
+                        { name: 'East', value: 'e' },
+                        { name: 'West', value: 'w' }]
+                })
+                    .then(({ direction }) => {
+                        this.api.getOptions(userId, direction)
+                            .then((body) => {
+                                const resolved = body.resolved;
+                                const unresolved = body.unresolved;
+                                console.log(body.description);
+                                if(body.action === 'interact') {
+                                    this.api.addItem(userId, body.item.type)
+                                        .then((body) => {
+                                            console.log(`${body.item.type} has been added to your inventory!`);
+                                        });
+                                } else if(body.action === 'resolve') {
+                                    this.api.checkInventory(userId)
+                                        .then(body => {
+                                            if(body.found) {
+                                                console.log(resolved);
+                                            // TODO: Endgame / next task
+                                            } else console.log(unresolved);
+                                        });
+                                }
 
+
+                            });
+                    });
             });
-
     }
 }
 
