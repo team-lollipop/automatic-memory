@@ -36,8 +36,8 @@ const service = {
                 return body;
             });
     },
-    getOptions(userId, direction) {
-        return request.get(`${server}/api/users/${userId}?direction=${direction}`)
+    getOption(userId, direction) {
+        return request.get(`${server}/api/users/${userId}/directions/${direction}`)
             .then(({ body }) => {
                 return body;
             });
