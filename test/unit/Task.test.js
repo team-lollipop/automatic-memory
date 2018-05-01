@@ -1,5 +1,6 @@
 const { assert } = require('chai');
 const Task = require('../../lib/models/Task');
+const { getErrors } = require('./helpers');
 
 describe('Task model', () => {
     it('is a good, valid model', () => {
@@ -24,5 +25,15 @@ describe('Task model', () => {
         assert.isUndefined(task.validateSync());
     });
 
-    // TODO: more tests (e.g. required fields)
+    it('has required fields', () => {
+        const invalidTask = new Task({});
+        const errors = getErrors(invalidTask.validateSync(), 7);
+        assert.strictEqual(errors.number.kind, 'required');
+        assert.strictEqual(errors.explanation.kind, 'required');
+        assert.strictEqual(errors['item.type'].kind, 'required');
+        assert.strictEqual(errors['item.description'].kind, 'required');
+        assert.strictEqual(errors['endpoint.description'].kind, 'required');
+        assert.strictEqual(errors['endpoint.unresolved'].kind, 'required');
+        assert.strictEqual(errors['endpoint.resolved'].kind, 'required');
+    });
 });
