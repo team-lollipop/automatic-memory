@@ -1,16 +1,13 @@
 const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
-const User = require('../../lib/models/User');
 
-describe.only('User routes', () => {
-    
+describe('User API', () => {
+
     before(() => dropCollection('tasks'));
     before(() => dropCollection('fluffs'));
-    before(() => dropCollection('users'));
-    
-    let token = '';
-    
+    beforeEach(() => dropCollection('users'));
+
     const fluffs = [
         { description : 'You arrive at a freeway.' },
         { description : 'There is a wide river here.' },
@@ -24,6 +21,7 @@ describe.only('User routes', () => {
                 .then();
         });
     });
+
     let task = {
         number: 1,
         explanation: 'You begin to feel hungry. Better find some food.',
@@ -47,15 +45,14 @@ describe.only('User routes', () => {
     });
 
     let user = {
-        name: 'Joe',
-        password: 'hello'
+        name: 'Master Blaster',
+        password: 'bartertown',
     };
-        
-    before(() => {
+
+    beforeEach(() => {
         return request.post('/api/auth/signup')
             .send(user)
             .then(({ body }) => {
-                token = body.token;
                 user.id = body.userId;
             });
     });
@@ -75,5 +72,12 @@ describe.only('User routes', () => {
             });
     });
 
-
+    it('gets an option (corresponding to one of 4 directions) and populates it with information', () => {
+        const direction = 'n';
+        return request.get(`/api/users/${user.id}/directions/${direction}`)
+            .then(({ body }) => {
+                assert.ok(body.action);
+                assert.ok(body.info);
+            });
+    });
 });
