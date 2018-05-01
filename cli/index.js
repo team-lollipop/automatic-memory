@@ -6,7 +6,7 @@ const server = 'http://localhost:3000';
 const colors = require('colors');
 
 
-console.log('Hi, welcome to Bird\'s eye view!', emoji.bird[1]);
+console.log(`Hi, welcome to Bird's eye view! ${emoji.bird[1]} \n\n`.blue.bold);
 
 
 let token = '';

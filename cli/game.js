@@ -7,7 +7,7 @@ const signupQuestions = [
     {
         type: 'list',
         name: 'auth',
-        message: 'Are you a new or returning user?',
+        message: 'Are you a new or returning user?\n\n',
         choices: [{ name:'This is my first time, sign me up!', value: 'signUp' }, { name: 'I\'ve been here before, sign me in!', value: 'signIn' }]
     },
     {
@@ -37,9 +37,9 @@ class Game {
             })
             .catch((err) => {
                 lineBreak();
-                console.log(JSON.parse(err.response.text).error.yellow, 'Please try again!');
+                console.log(JSON.parse(err.response.text).error.yellow, 'Please try again!'.bold.cyan);
                 lineBreak();
-                this.start();                
+                this.start();
             });
     }
     // createTask(userId) {
