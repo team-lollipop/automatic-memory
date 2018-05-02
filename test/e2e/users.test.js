@@ -80,4 +80,11 @@ describe('User API', () => {
                 assert.ok(body.info);
             });
     });
+
+    it('gets a user\'s current task number', () => {
+        return request.get(`/api/users/${user.id}/level`)
+            .then(({ body }) => {
+                assert.isNumber(body.level);
+            });
+    });
 });
