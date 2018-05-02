@@ -88,6 +88,8 @@ class Game {
             .then(body => {
                 if(body.found) {
                     console.log(resolved);
+                    // delete inventory here?
+                    // check level status and update
                 // TODO: Endgame / next task
                 } else {
                     console.log(unresolved);
