@@ -49,16 +49,30 @@ const service = {
                 return body;
             });
     },
-    checkInventory(userId) {
+    getInventory(userId) {
         return request.get(`${server}/api/users/${userId}/inventory`)
             .then(({ body }) => {
                 return body;
             });
-    
     },
     deleteInventory(userId) {
-        return request.get(`${server}/api/users/${userId}/inventory`)
-            
+        return request.delete(`${server}/api/users/${userId}/inventory`)
+            .then(({ body }) => {
+                return body;
+            });
+    },
+    getLevel(userId) {
+        return request.get(`${server}/api/users/${userId}/level`)
+            .then(({ body }) => {
+                return body;
+            });
+    },
+    updateLevel(userId, newLevel) {
+        return request.put(`${server}/api/users/${userId}/level`)
+            .send({ level: newLevel })
+            .then(({ body }) => {
+                return body;
+            });
     }
 };
 
