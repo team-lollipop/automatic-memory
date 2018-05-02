@@ -16,7 +16,8 @@ describe('User model', () => {
                 s: { action: 'look' },
                 e: { action: 'resolve' },
                 w: { action: 'look' }
-            }
+            },
+            roles: ['theBoss']
         };
         const user = new User(fullInput);
         fullInput._id = user._id;
@@ -26,14 +27,9 @@ describe('User model', () => {
 
     it('has required fields', () => {
         const user = new User({});
-        const errors = getErrors(user.validateSync(), 7);
+        const errors = getErrors(user.validateSync(), 2);
         assert.strictEqual(errors.name.kind, 'required');
         assert.strictEqual(errors.hash.kind, 'required');
-        assert.strictEqual(errors.currentTask.kind, 'required');
-        assert.strictEqual(errors['options.n.action'].kind, 'required');
-        assert.strictEqual(errors['options.s.action'].kind, 'required');
-        assert.strictEqual(errors['options.e.action'].kind, 'required');
-        assert.strictEqual(errors['options.w.action'].kind, 'required');
     });
 
     const input = {

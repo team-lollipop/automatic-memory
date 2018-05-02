@@ -7,6 +7,23 @@ describe('User API', () => {
     before(() => dropCollection('tasks'));
     before(() => dropCollection('fluffs'));
     before(() => dropCollection('users'));
+    
+    const adminUser = {
+        name: 'Tina Turner',
+        password: 'Tommy',
+        roles: ['admin']
+    };
+    
+    let adminToken = null;
+    
+    before(() => {
+        return request.post('/api/auth/signup')
+            .send(adminUser)
+            .then(({ body }) => {
+                adminToken = body.token;
+                adminUser.id = body.userId;
+            });
+    });
 
     let token = '';
 
@@ -19,6 +36,7 @@ describe('User API', () => {
     before(() => {
         fluffs.forEach(obj => {
             request.post('/api/fluffs')
+                .set('Authorization', adminToken)
                 .send(obj)
                 .then();
         });
@@ -40,6 +58,7 @@ describe('User API', () => {
 
     before(() => {
         return request.post('/api/tasks')
+            .set('Authorization', adminToken)
             .send(task1)
             .then();
     });
@@ -118,6 +137,7 @@ describe('User API', () => {
         };
 
         return request.post('/api/tasks')
+            .set('Authorization', adminToken)
             .send(task2)
             .then(({ body }) => {
                 task2._id = body._id;
