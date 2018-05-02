@@ -6,7 +6,7 @@ describe('Fluff model', () => {
 
     it('is a good, valid model', () => {
         const info = {
-            description: 'You arrive at a freeway.'
+            desc: 'You arrive at a freeway.'
         };
 
         const fluff = new Fluff(info);
@@ -18,7 +18,7 @@ describe('Fluff model', () => {
     it('has required fields', () => {
         const invalidFluff = new Fluff({});
         const errors = getErrors(invalidFluff.validateSync(), 1);
-        assert.strictEqual(errors.description.kind, 'required');
+        assert.strictEqual(errors.desc.kind, 'required');
     });
 
 });

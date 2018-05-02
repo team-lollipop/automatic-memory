@@ -8,7 +8,7 @@ describe('Fluff API', () => {
     before(() => dropCollection('fluffs'));
 
     const info = {
-        description : 'You arrive at a freeway.'
+        desc: 'You arrive at a freeway.'
     };
 
     it('saves a bit of fluff', () => {
