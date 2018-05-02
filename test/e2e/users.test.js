@@ -72,7 +72,7 @@ describe('User API', () => {
 
     it('gets an option (corresponding to one of 4 directions) and populates it with information', () => {
         const direction = 'n';
-        return request.get(`/api/users/${user.id}/directions/${direction}`)
+        return request.get(`/api/users/${user.id}/options/${direction}`)
             .then(({ body }) => {
                 assert.ok(body.action);
                 assert.ok(body.info);
