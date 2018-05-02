@@ -2,7 +2,7 @@ const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
 
-describe('User API', () => {
+describe.only('User API', () => {
 
     before(() => dropCollection('tasks'));
     before(() => dropCollection('fluffs'));
@@ -79,6 +79,15 @@ describe('User API', () => {
             });
     });
 
+
+    it('Deletes item to inventory', () => {
+        return request.delete(`/api/users/${user.id}/inventory`)
+            .then(({ body }) => {
+
+                assert.deepEqual([], body.inventory);
+             });
+    });
+
     it('gets a user\'s current task number', () => {
         return request.get(`/api/users/${user.id}/level`)
             .then(({ body }) => {
@@ -111,6 +120,7 @@ describe('User API', () => {
             .then(({ body }) => {
                 assert.equal(body.currentTask, task2._id);
                 assert.equal(body._id, user.id);
+
             });
     });
 
