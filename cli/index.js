@@ -37,14 +37,14 @@ const service = {
             });
     },
     getOption(userId, direction) {
-        return request.get(`${server}/api/users/${userId}/directions/${direction}`)
+        return request.get(`${server}/api/users/${userId}/options/${direction}`)
             .then(({ body }) => {
                 return body;
             });
     },
     addItem(userId, item) {
         return request.post(`${server}/api/users/${userId}/inventory`)
-            .send(item)
+            .send({ type: item })
             .then(({ body }) => {
                 return body;
             });
