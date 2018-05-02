@@ -1,6 +1,7 @@
 /* eslint no-console:off */
 const inquirer = require('inquirer');
 const colors = require('colors'); // eslint-disable-line
+const gameLevels = 2;
 
 const lineBreak = () => console.log('\n');
 
@@ -33,14 +34,13 @@ class Game {
             .then(({ token, name, userId }) => {
                 this.user = name;
                 this.api.token = token;
-                lineBreak();
+                // lineBreak();
                 // console.log(`Welcome ${name.green}!`);
                 this.presentTask(userId);
             })
             .catch((err) => {
                 lineBreak();
                 console.log(JSON.parse(err.response.text).error.yellow, 'Please try again!'.bold.cyan);
-                lineBreak();
                 this.start();
             });
     }
@@ -54,7 +54,7 @@ class Game {
     }
     showOptions(userId) {
         lineBreak();        
-        return inquirer.prompt({
+        inquirer.prompt({
             type: 'list',
             name: 'direction',
             message: 'Which direction would you like to fly?',
@@ -80,14 +80,12 @@ class Game {
                         this.addToInventory(userId, body.info);
                         break;
                     case 'resolve':
-                        lineBreak();
-                        console.log(body.info.desc.cyan);
-                        this.completeTask(userId, body.info.resolved, body.info.unresolved);
+                        this.completeTask(userId, body.info);
                 }
             });   
     }
     addToInventory(userId, itemInfo) {
-        this.api.checkInventory(userId)
+        this.api.getInventory(userId)
             .then(body => {
                 if(body.inventory[0] === itemInfo.type) {
                     lineBreak();                    
@@ -99,25 +97,54 @@ class Game {
                     this.api.addItem(userId, itemInfo.type)
                         .then(body => {
                             lineBreak();                
-                            console.log(`You fly back with ${body.inventory[0]} in your inventory.`.magenta);
+                            console.log(`You fly back with a ${body.inventory[0]}.`.magenta);
                             this.showOptions(userId);                
                         });
                 }
             });
     }
-    completeTask(userId, resolved, unresolved) {
-        this.api.checkInventory(userId)
+    completeTask(userId, endpointInfo) {
+        this.api.getInventory(userId)
             .then(body => {
-                if(body.found) {
-                    console.log(resolved);
-                    // delete inventory here?
-                    // check level status and update
-                // TODO: Endgame / next task
+                if(body.inventory[0] === endpointInfo.requiredItem) {
+                    lineBreak();                                        
+                    console.log(`${endpointInfo.desc} ${endpointInfo.resolved}`.cyan);
+                    this.endLevel(userId);
                 } else {
                     lineBreak();                    
-                    console.log(unresolved.cyan);
+                    console.log(`${endpointInfo.desc} ${endpointInfo.unresolved} You fly back.`.cyan);
                     this.showOptions(userId);                
                 }
+            });
+    }
+    endLevel(userId) {
+        this.api.deleteInventory(userId)
+            .then(({ inventory }) => {
+                if(inventory.length === 0) {
+                    return this.api.getLevel(userId);
+                }
+            })
+            .then(({ level }) => {
+                if(level === gameLevels) {
+                    lineBreak();                                    
+                    inquirer.prompt({
+                        type: 'list',
+                        name: 'newGame',
+                        message: 'The End. Would you like to play again?',
+                        choices: [{ name:'Yes!', value: 'yes' }]
+                    })
+                        .then(({ newGame }) => {
+                            if(newGame) this.newLevel(userId, 1);
+                        });
+                } else {
+                    this.newLevel(userId, level + 1);
+                }
+            });
+    }
+    newLevel(userId, newLevel) {
+        this.api.updateLevel(userId, newLevel)
+            .then(() => {
+                this.presentTask(userId);
             });
     }
 }
