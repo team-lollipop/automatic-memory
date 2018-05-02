@@ -7,7 +7,24 @@ describe('Auth API', () => {
 
     before(() => dropCollection('tasks'));
     before(() => dropCollection('fluffs'));
-    beforeEach(() => dropCollection('users'));
+    before(() => dropCollection('users'));
+    
+    const adminUser = {
+        name: 'Tina Turner',
+        password: 'Tommy',
+        roles: ['admin']
+    };
+    
+    let adminToken = null;
+    
+    before(() => {
+        return request.post('/api/auth/signup')
+            .send(adminUser)
+            .then(({ body }) => {
+                adminToken = body.token;
+                adminUser.id = body.userId;
+            });
+    });
 
     let token = null;
 
@@ -20,6 +37,7 @@ describe('Auth API', () => {
     before(() => {
         fluffs.forEach(obj => {
             request.post('/api/fluffs')
+                .set('Authorization', adminToken)
                 .send(obj)
                 .then();
         });
@@ -41,6 +59,7 @@ describe('Auth API', () => {
 
     before(() => {
         return request.post('/api/tasks')
+            .set('Authorization', adminToken)
             .send(task)
             .then();
     });
@@ -50,7 +69,7 @@ describe('Auth API', () => {
         password: 'bartertown',
     };
 
-    beforeEach(() => {
+    before(() => {
         return request.post('/api/auth/signup')
             .send(user)
             .then(({ body }) => {
