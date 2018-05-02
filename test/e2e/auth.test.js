@@ -78,11 +78,11 @@ describe('Auth API', () => {
             });
     });
 
-    it('signup route functional', () => {
+    it('has a functional signup route', () => {
         assert.ok(token);
     });
 
-    it('verify route functional', () => {
+    it('has a functional verify route', () => {
         return request.get('/api/auth/verify')
             .set('Authorization', token)
             .then(({ body }) => {
@@ -90,7 +90,7 @@ describe('Auth API', () => {
             });
     });
 
-    it('signin route functional', () => {
+    it('has a functional signin route', () => {
         return request.post('/api/auth/signin')
             .send({
                 name: 'Master Blaster',

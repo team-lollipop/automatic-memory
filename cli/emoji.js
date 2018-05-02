@@ -1,6 +1,5 @@
 const emoji = require('node-emoji');
 
-
 module.exports = {
     bird: [
         emoji.get('bird'),

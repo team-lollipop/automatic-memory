@@ -77,7 +77,7 @@ describe('User API', () => {
             });
     });
 
-    it('Adds item to inventory', () => {
+    it('adds an item to inventory', () => {
         return request.post(`/api/users/${user.id}/inventory`)
             .set('Authorization', token)
             .send(task1.requiredItem)
@@ -104,7 +104,7 @@ describe('User API', () => {
             });
     });
 
-    it('Deletes item to inventory', () => {
+    it('deletes an item from inventory', () => {
         return request.delete(`/api/users/${user.id}/inventory`)
             .set('Authorization', token)
             .then(({ body }) => {

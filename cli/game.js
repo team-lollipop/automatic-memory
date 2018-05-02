@@ -34,11 +34,9 @@ class Game {
             .then(({ token, name, userId }) => {
                 this.user = name;
                 this.api.token = token;
-                // lineBreak();
-                // console.log(`Welcome ${name.green}!`);
                 this.presentTask(userId);
             })
-            .catch((err) => {
+            .catch(err => {
                 lineBreak();
                 console.log(JSON.parse(err.response.text).error.yellow, 'Please try again!'.bold.cyan);
                 this.start();
@@ -148,6 +146,5 @@ class Game {
             });
     }
 }
-
 
 module.exports = Game;

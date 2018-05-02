@@ -1,4 +1,3 @@
-// const inquirer = require('inquirer');
 const request = require('superagent');
 const Game = require('./game');
 const emoji = require('./emoji');
