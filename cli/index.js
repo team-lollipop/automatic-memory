@@ -2,7 +2,7 @@
 const request = require('superagent');
 const Game = require('./game');
 const emoji = require('./emoji');
-const server = 'http://localhost:3000';
+const server = 'https://better-birds-eye-view.herokuapp.com';
 const colors = require('colors'); // eslint-disable-line
 
 
@@ -38,12 +38,14 @@ const service = {
     },
     getOption(userId, direction) {
         return request.get(`${server}/api/users/${userId}/options/${direction}`)
+            .set('Authorization', token)
             .then(({ body }) => {
                 return body;
             });
     },
     addItem(userId, item) {
         return request.post(`${server}/api/users/${userId}/inventory`)
+            .set('Authorization', token)
             .send({ type: item })
             .then(({ body }) => {
                 return body;
@@ -51,24 +53,28 @@ const service = {
     },
     getInventory(userId) {
         return request.get(`${server}/api/users/${userId}/inventory`)
+            .set('Authorization', token)
             .then(({ body }) => {
                 return body;
             });
     },
     deleteInventory(userId) {
         return request.delete(`${server}/api/users/${userId}/inventory`)
+            .set('Authorization', token)
             .then(({ body }) => {
                 return body;
             });
     },
     getLevel(userId) {
         return request.get(`${server}/api/users/${userId}/level`)
+            .set('Authorization', token)
             .then(({ body }) => {
                 return body;
             });
     },
     updateLevel(userId, newLevel) {
         return request.put(`${server}/api/users/${userId}/level`)
+            .set('Authorization', token)
             .send({ level: newLevel })
             .then(({ body }) => {
                 return body;
