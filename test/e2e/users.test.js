@@ -9,9 +9,9 @@ describe.only('User API', () => {
     before(() => dropCollection('users'));
 
     const fluffs = [
-        { description : 'You arrive at a freeway.' },
-        { description : 'There is a wide river here.' },
-        { description : 'You find a tall dead tree.' }
+        { desc: 'You arrive at a freeway.' },
+        { desc: 'There is a wide river here.' },
+        { desc: 'You find a tall dead tree.' }
     ];
 
     before(() => {
@@ -72,7 +72,7 @@ describe.only('User API', () => {
 
     it('gets an option (corresponding to one of 4 directions) and populates it with information', () => {
         const direction = 'n';
-        return request.get(`/api/users/${user.id}/directions/${direction}`)
+        return request.get(`/api/users/${user.id}/options/${direction}`)
             .then(({ body }) => {
                 assert.ok(body.action);
                 assert.ok(body.info);

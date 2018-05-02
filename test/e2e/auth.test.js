@@ -12,9 +12,9 @@ describe('Auth API', () => {
     let token = null;
 
     const fluffs = [
-        { description : 'You arrive at a freeway.' },
-        { description : 'There is a wide river here.' },
-        { description : 'You find a tall dead tree.' }
+        { desc: 'You arrive at a freeway.' },
+        { desc: 'There is a wide river here.' },
+        { desc: 'You find a tall dead tree.' }
     ];
 
     before(() => {

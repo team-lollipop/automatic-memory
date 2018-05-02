@@ -1,5 +1,6 @@
+/* eslint no-console:off */
 const inquirer = require('inquirer');
-const colors = require('colors');
+const colors = require('colors'); // eslint-disable-line
 
 const lineBreak = () => console.log('\n');
 
@@ -30,9 +31,10 @@ class Game {
         inquirer.prompt(signupQuestions)
             .then(({ auth, name, password }) => this.api[auth]({ name, password }))
             .then(({ token, name, userId }) => {
+                this.user = name;
                 this.api.token = token;
                 lineBreak();
-                console.log(`Welcome ${name.green}!`);
+                // console.log(`Welcome ${name.green}!`);
                 this.presentTask(userId);
             })
             .catch((err) => {
@@ -45,14 +47,17 @@ class Game {
     presentTask(userId) {
         this.api.getTask(userId, this.api.token)
             .then(task => {
-                console.log(task);
+                lineBreak();                
+                console.log(task.intro.replace('(User Name)', this.user).blue);
                 this.showOptions(userId);
             });
     }
     showOptions(userId) {
+        lineBreak();        
         return inquirer.prompt({
             type: 'list',
             name: 'direction',
+            message: 'Which direction would you like to fly?',
             choices: [{ name:'North', value: 'n' },
                 { name: 'South', value: 's' },
                 { name: 'East', value: 'e' },
@@ -64,23 +69,40 @@ class Game {
     }
     resolveAction(userId, direction) {       
         this.api.getOption(userId, direction)
-            .then((body) => {
-                const resolved = body.resolved;
-                const unresolved = body.unresolved;
-
-                console.log(body.description);
-
-                if(body.action === 'interact') {
-                    this.addToInventory(userId, body.item.type);
-                } else if(body.action === 'resolve') {
-                    this.completeTask(userId, resolved, unresolved);
+            .then(body => {
+                switch(body.action) {
+                    case 'look':
+                        lineBreak();
+                        console.log(`${body.info} You fly back.`.cyan);
+                        this.showOptions(userId);
+                        break;
+                    case 'interact':
+                        this.addToInventory(userId, body.info);
+                        break;
+                    case 'resolve':
+                        lineBreak();
+                        console.log(body.info.desc.cyan);
+                        this.completeTask(userId, body.info.resolved, body.info.unresolved);
                 }
             });   
     }
-    addToInventory(userId, item) {
-        this.api.addItem(userId, item)
-            .then((body) => {
-                console.log(`${body.inventory[0]} has been added to your inventory!`);
+    addToInventory(userId, itemInfo) {
+        this.api.checkInventory(userId)
+            .then(body => {
+                if(body.inventory[0] === itemInfo.type) {
+                    lineBreak();                    
+                    console.log(`This is where you found your ${body.inventory[0]}. You fly back.`.magenta);
+                    this.showOptions(userId);
+                } else {
+                    lineBreak();
+                    console.log(itemInfo.itemDesc.cyan);
+                    this.api.addItem(userId, itemInfo.type)
+                        .then(body => {
+                            lineBreak();                
+                            console.log(`You fly back with ${body.inventory[0]} in your inventory.`.magenta);
+                            this.showOptions(userId);                
+                        });
+                }
             });
     }
     completeTask(userId, resolved, unresolved) {
@@ -92,8 +114,9 @@ class Game {
                     // check level status and update
                 // TODO: Endgame / next task
                 } else {
-                    console.log(unresolved);
-                    this.presentTask(userId);
+                    lineBreak();                    
+                    console.log(unresolved.cyan);
+                    this.showOptions(userId);                
                 }
             });
     }
