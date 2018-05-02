@@ -1,7 +1,7 @@
 const connect = require('../../lib/util/connect');
 const mongoose = require('mongoose');
 
-before(() => connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/bird-game-test'));
+before(() => connect('mongodb://localhost:27017/bird-game-test'));
 after(() => mongoose.connection.close());
 
 module.exports = {
@@ -11,5 +11,4 @@ module.exports = {
                 if(err.codeName !== 'NamespaceNotFound') throw err;
             });
     }
-
 };

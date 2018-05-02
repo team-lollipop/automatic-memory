@@ -8,7 +8,6 @@ const getErrors = (validation, expected) => {
         assert.equal(Object.keys(errors).length, expected);
     }
     return errors;
-
 };
 
 module.exports = { getErrors };
