@@ -79,7 +79,6 @@ describe('User API', () => {
             });
     });
 
-
     it('Deletes item to inventory', () => {
         return request.delete(`/api/users/${user.id}/inventory`)
             .then(({ body }) => {
