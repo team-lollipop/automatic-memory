@@ -1,4 +1,4 @@
-const inquirer = require('inquirer');
+// const inquirer = require('inquirer');
 const request = require('superagent');
 const Game = require('./game');
 const emoji = require('./emoji');
@@ -6,7 +6,7 @@ const server = 'http://localhost:3000';
 const colors = require('colors');
 
 
-console.log(`Hi, welcome to Bird's eye view! ${emoji.bird[1]} \n\n`.blue.bold);
+console.log(`\n\n\n\nHi, welcome to Bird's eye view! ${emoji.bird[1]} \n\n`.blue.bold); // eslint-disable-line
 
 
 let token = '';
