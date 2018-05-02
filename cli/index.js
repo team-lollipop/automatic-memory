@@ -58,7 +58,9 @@ const service = {
     },
     deleteInventory(userId) {
         return request.get(`${server}/api/users/${userId}/inventory`)
-            
+            .then(({ body }) => {
+                return body;
+            });
     }
 };
 
