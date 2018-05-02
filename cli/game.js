@@ -1,6 +1,6 @@
 /* eslint no-console:off */
 const inquirer = require('inquirer');
-const colors = require('colors');
+const colors = require('colors'); // eslint-disable-line
 
 const lineBreak = () => console.log('\n');
 
@@ -31,9 +31,10 @@ class Game {
         inquirer.prompt(signupQuestions)
             .then(({ auth, name, password }) => this.api[auth]({ name, password }))
             .then(({ token, name, userId }) => {
+                this.user = name;
                 this.api.token = token;
                 lineBreak();
-                console.log(`Welcome ${name.green}!`);
+                // console.log(`Welcome ${name.green}!`);
                 this.presentTask(userId);
             })
             .catch((err) => {
@@ -46,7 +47,8 @@ class Game {
     presentTask(userId) {
         this.api.getTask(userId, this.api.token)
             .then(task => {
-                console.log(task);
+                console.log(task.intro.replace('(User Name)', this.user).blue);
+                lineBreak();                
                 this.showOptions(userId);
             });
     }
@@ -54,6 +56,7 @@ class Game {
         return inquirer.prompt({
             type: 'list',
             name: 'direction',
+            message: 'Which direction would you like to fly?',
             choices: [{ name:'North', value: 'n' },
                 { name: 'South', value: 's' },
                 { name: 'East', value: 'e' },
