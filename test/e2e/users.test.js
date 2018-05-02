@@ -22,7 +22,7 @@ describe.only('User API', () => {
         });
     });
 
-    let task = {
+    let task1 = {
         number: 1,
         startingDesc: 'You begin to feel hungry. Better find some food.',
         requiredItem: { 
@@ -38,10 +38,8 @@ describe.only('User API', () => {
 
     before(() => {
         return request.post('/api/tasks')
-            .send(task)
-            .then(({ _id }) => {
-                task._id = _id;
-            });
+            .send(task1)
+            .then();
     });
 
     let user = {
@@ -59,16 +57,16 @@ describe.only('User API', () => {
 
     it('Adds item to inventory', () => {
         return request.post(`/api/users/${user.id}/inventory`)
-            .send(task.requiredItem)
+            .send(task1.requiredItem)
             .then(({ body }) => {
-                assert.deepEqual([task.requiredItem.type], body.inventory);
+                assert.deepEqual([task1.requiredItem.type], body.inventory);
             });
     });
 
     it('gets inventory', () => {
         return request.get(`/api/users/${user.id}/inventory`)
             .then(({ body }) => {
-                assert.deepEqual([task.requiredItem.type], body.inventory);
+                assert.deepEqual([task1.requiredItem.type], body.inventory);
             });
     });
 
@@ -81,11 +79,48 @@ describe.only('User API', () => {
             });
     });
 
+
     it('Deletes item to inventory', () => {
         return request.delete(`/api/users/${user.id}/inventory`)
             .then(({ body }) => {
 
                 assert.deepEqual([], body.inventory);
+             });
+    });
+
+    it('gets a user\'s current task number', () => {
+        return request.get(`/api/users/${user.id}/level`)
+            .then(({ body }) => {
+                assert.isNumber(body.level);
+            });
+    });
+
+    it('updates a user\'s current task number', () => {
+        const task2 = {
+            number: 2,
+            startingDesc: 'Different desc.',
+            requiredItem: { 
+                type: 'something',
+                itemDesc: 'Different desc.'
+            },
+            endpoint: {
+                desc: 'Different desc.',
+                unresolved: 'Nope, not yet.',
+                resolved: 'Yay, you.'
+            }
+        };
+
+        return request.post('/api/tasks')
+            .send(task2)
+            .then(({ body }) => {
+                task2._id = body._id;
+                return request.put(`/api/users/${user.id}/level`)
+                    .send({ level: 2 });
+            })
+            .then(({ body }) => {
+                assert.equal(body.currentTask, task2._id);
+                assert.equal(body._id, user.id);
+
             });
     });
 

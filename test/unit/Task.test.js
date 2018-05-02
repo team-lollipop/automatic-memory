@@ -29,10 +29,10 @@ describe('Task model', () => {
         const invalidTask = new Task({});
         const errors = getErrors(invalidTask.validateSync(), 7);
         assert.strictEqual(errors.number.kind, 'required');
-        assert.strictEqual(errors.explanation.kind, 'required');
-        assert.strictEqual(errors['item.type'].kind, 'required');
-        assert.strictEqual(errors['item.description'].kind, 'required');
-        assert.strictEqual(errors['endpoint.description'].kind, 'required');
+        assert.strictEqual(errors.startingDesc.kind, 'required');
+        assert.strictEqual(errors['requiredItem.type'].kind, 'required');
+        assert.strictEqual(errors['requiredItem.itemDesc'].kind, 'required');
+        assert.strictEqual(errors['endpoint.desc'].kind, 'required');
         assert.strictEqual(errors['endpoint.unresolved'].kind, 'required');
         assert.strictEqual(errors['endpoint.resolved'].kind, 'required');
     });

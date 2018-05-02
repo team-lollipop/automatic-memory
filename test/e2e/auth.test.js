@@ -42,9 +42,7 @@ describe('Auth API', () => {
     before(() => {
         return request.post('/api/tasks')
             .send(task)
-            .then(({ _id }) => {
-                task._id = _id;
-            });
+            .then();
     });
 
     let user = {
