@@ -2,7 +2,7 @@ const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
 
-describe('User API', () => {
+describe.only('User API', () => {
 
     before(() => dropCollection('tasks'));
     before(() => dropCollection('fluffs'));
@@ -80,4 +80,13 @@ describe('User API', () => {
                 assert.ok(body.info);
             });
     });
+
+    it('Deletes item to inventory', () => {
+        return request.delete(`/api/users/${user.id}/inventory`)
+            .then(({ body }) => {
+
+                assert.deepEqual([], body.inventory);
+            });
+    });
+
 });
