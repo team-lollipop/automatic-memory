@@ -2,11 +2,13 @@ const { assert } = require('chai');
 const request = require('./request');
 const { dropCollection } = require('./db');
 
-describe.only('User API', () => {
+describe('User API', () => {
 
     before(() => dropCollection('tasks'));
     before(() => dropCollection('fluffs'));
     before(() => dropCollection('users'));
+
+    let token = '';
 
     const fluffs = [
         { desc: 'You arrive at a freeway.' },
@@ -52,11 +54,13 @@ describe.only('User API', () => {
             .send(user)
             .then(({ body }) => {
                 user.id = body.userId;
+                token = body.token;
             });
     });
 
     it('Adds item to inventory', () => {
         return request.post(`/api/users/${user.id}/inventory`)
+            .set('Authorization', token)
             .send(task1.requiredItem)
             .then(({ body }) => {
                 assert.deepEqual([task1.requiredItem.type], body.inventory);
@@ -65,6 +69,7 @@ describe.only('User API', () => {
 
     it('gets inventory', () => {
         return request.get(`/api/users/${user.id}/inventory`)
+            .set('Authorization', token)
             .then(({ body }) => {
                 assert.deepEqual([task1.requiredItem.type], body.inventory);
             });
@@ -73,6 +78,7 @@ describe.only('User API', () => {
     it('gets an option (corresponding to one of 4 directions) and populates it with information', () => {
         const direction = 'n';
         return request.get(`/api/users/${user.id}/options/${direction}`)
+            .set('Authorization', token)
             .then(({ body }) => {
                 assert.ok(body.action);
                 assert.ok(body.info);
@@ -81,6 +87,7 @@ describe.only('User API', () => {
 
     it('Deletes item to inventory', () => {
         return request.delete(`/api/users/${user.id}/inventory`)
+            .set('Authorization', token)
             .then(({ body }) => {
 
                 assert.deepEqual([], body.inventory);
@@ -89,6 +96,7 @@ describe.only('User API', () => {
     
     it('gets a user\'s current task number', () => {
         return request.get(`/api/users/${user.id}/level`)
+            .set('Authorization', token)
             .then(({ body }) => {
                 assert.isNumber(body.level);
             });
@@ -114,6 +122,7 @@ describe.only('User API', () => {
             .then(({ body }) => {
                 task2._id = body._id;
                 return request.put(`/api/users/${user.id}/level`)
+                    .set('Authorization', token)
                     .send({ level: 2 });
             })
             .then(({ body }) => {
