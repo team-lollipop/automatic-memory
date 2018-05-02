@@ -108,7 +108,6 @@ describe('User API', () => {
         return request.delete(`/api/users/${user.id}/inventory`)
             .set('Authorization', token)
             .then(({ body }) => {
-
                 assert.deepEqual([], body.inventory);
             });
     });
