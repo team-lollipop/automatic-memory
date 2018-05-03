@@ -1,6 +1,6 @@
 const { assert } = require('chai');
 const request = require('./request');
-const { dropCollection } = require('./db');
+const { dropCollection, createAdminToken } = require('./db');
 
 describe('User API', () => {
 
@@ -8,22 +8,8 @@ describe('User API', () => {
     before(() => dropCollection('fluffs'));
     before(() => dropCollection('users'));
     
-    const adminUser = {
-        name: 'Tina Turner',
-        password: 'Tommy',
-        roles: ['admin']
-    };
-    
-    let adminToken = null;
-    
-    before(() => {
-        return request.post('/api/auth/signup')
-            .send(adminUser)
-            .then(({ body }) => {
-                adminToken = body.token;
-                adminUser.id = body.userId;
-            });
-    });
+    let adminToken = '';
+    before(() => createAdminToken().then(t => adminToken = t));
 
     let token = '';
 
@@ -77,7 +63,7 @@ describe('User API', () => {
             });
     });
 
-    it('Adds item to inventory', () => {
+    it('adds an item to inventory', () => {
         return request.post(`/api/users/${user.id}/inventory`)
             .set('Authorization', token)
             .send(task1.requiredItem)
@@ -104,7 +90,7 @@ describe('User API', () => {
             });
     });
 
-    it('Deletes item to inventory', () => {
+    it('deletes an item from inventory', () => {
         return request.delete(`/api/users/${user.id}/inventory`)
             .set('Authorization', token)
             .then(({ body }) => {

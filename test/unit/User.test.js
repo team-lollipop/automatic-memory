@@ -50,5 +50,4 @@ describe('User model', () => {
         user.generateHash(password);
         assert.ok(user.comparePassword(password));
     });
-
 });
