@@ -1,28 +1,14 @@
 const { assert } = require('chai');
 const request = require('./request');
-const { dropCollection } = require('./db');
+const { dropCollection, createAdminToken } = require('./db');
 
 describe('Fluff API', () => {
     
     before(() => dropCollection('fluffs'));
     before(() => dropCollection('users'));
     
-    const adminUser = {
-        name: 'Tina Turner',
-        password: 'Tommy',
-        roles: ['admin']
-    };
-    
-    let adminToken = null;
-    
-    before(() => {
-        return request.post('/api/auth/signup')
-            .send(adminUser)
-            .then(({ body }) => {
-                adminToken = body.token;
-                adminUser.id = body.userId;
-            });
-    });
+    let adminToken = '';
+    before(() => createAdminToken().then(t => adminToken = t));
 
     const info = {
         desc: 'You arrive at a freeway.'
