@@ -46,7 +46,7 @@ class Game {
         this.api.getTask(userId, this.api.token)
             .then(task => {
                 lineBreak();                
-                console.log(task.intro.replace('(User Name)', this.user).blue);
+                console.log(task.intro.replace('(User Name)', this.user).bold.blue);
                 this.showOptions(userId);
             });
     }
@@ -71,7 +71,7 @@ class Game {
                 switch(body.action) {
                     case 'look':
                         lineBreak();
-                        console.log(`${body.info} You fly back.`.cyan);
+                        console.log(`${body.info} You fly back.`.bold.cyan);
                         this.showOptions(userId);
                         break;
                     case 'interact':
@@ -87,15 +87,15 @@ class Game {
             .then(body => {
                 if(body.inventory[0] === itemInfo.type) {
                     lineBreak();                    
-                    console.log(`This is where you found your ${body.inventory[0]}. You fly back.`.magenta);
+                    console.log(`This is where you found your ${body.inventory[0]}. You fly back.`.bold.magenta);
                     this.showOptions(userId);
                 } else {
                     lineBreak();
-                    console.log(itemInfo.itemDesc.cyan);
+                    console.log(itemInfo.itemDesc.bold.cyan);
                     this.api.addItem(userId, itemInfo.type)
                         .then(body => {
                             lineBreak();                
-                            console.log(`You fly back with a ${body.inventory[0]}.`.magenta);
+                            console.log(`You fly back with a ${body.inventory[0]}.`.bold.magenta);
                             this.showOptions(userId);                
                         });
                 }
@@ -106,11 +106,11 @@ class Game {
             .then(body => {
                 if(body.inventory[0] === endpointInfo.requiredItem) {
                     lineBreak();                                        
-                    console.log(`${endpointInfo.desc} ${endpointInfo.resolved}`.cyan);
+                    console.log(`${endpointInfo.desc} ${endpointInfo.resolved}`.bold.cyan);
                     this.endLevel(userId);
                 } else {
                     lineBreak();                    
-                    console.log(`${endpointInfo.desc} ${endpointInfo.unresolved} You fly back.`.cyan);
+                    console.log(`${endpointInfo.desc} ${endpointInfo.unresolved} You fly back.`.bold.cyan);
                     this.showOptions(userId);                
                 }
             });
