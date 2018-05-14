@@ -2,6 +2,8 @@
 
 This is a text-based adventure game played entirely through the CLI. You play a day in the life of a city crow who's only wish to find a decent meal goes off the rails, and plunges them into the secret world of urban animals both seen and unseen.
 
+// initial commit
+
 ## Requirements
 
 MongoDB, Node.js, and your favorite CLI
@@ -17,12 +19,15 @@ MongoDB, Node.js, and your favorite CLI
 
     ```
     npm i
+
     ```
 3. Type run command into the CLI to start the game!
 
     ```
     node cli
     ```
+
+
 
 ## Built With
 
