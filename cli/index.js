@@ -1,12 +1,12 @@
 const request = require('superagent');
 const Game = require('./game');
 const emoji = require('./emoji');
+// best to use a env variable for this!
 const server = 'https://better-birds-eye-view.herokuapp.com';
-const colors = require('colors'); // eslint-disable-line
-
+// ok to just require :)
+require('colors');
 
 console.log(`\n\n\n\nHi, welcome to Bird's eye view! ${emoji.bird[1]} \n\n`.blue.bold); // eslint-disable-line
-
 
 let token = '';
 
